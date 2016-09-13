@@ -282,13 +282,14 @@ def main():
                             '~/authorization_proxy.sock'))
     parser.add_argument('--logfile', help='Log file', default='/dev/null')
     parser.add_argument('action')
+    parser.add_argument('--syslog', help='syslog socket')
 
     args = parser.parse_args()
 
     level = logging.INFO
     if args.debug:
         level = logging.DEBUG
-    setup_logging("authorization_proxy", level)
+    setup_logging("authorization_proxy", level, args.syslog)
 
     if args.action == 'start':
         daemonize(target=authorization_proxy, pidfile=args.pidfile,

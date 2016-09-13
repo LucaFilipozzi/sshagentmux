@@ -24,11 +24,11 @@ import sys
 LOG = logging.getLogger(__name__)
 
 
-def setup_logging(name, level=logging.DEBUG):
+def setup_logging(name, level=logging.DEBUG, address='/dev/log'):
 
     log = logging.getLogger()
     log.setLevel(level)
-    handler = logging.handlers.SysLogHandler(address='/dev/log')
+    handler = logging.handlers.SysLogHandler(address=address)
 
     FORMAT = name + "[%(process)d]:%(module)s %(levelname)s %(message)s"
     DATE_FORMAT = '%b %d %H:%M:%S'

@@ -161,6 +161,7 @@ def main():
                         help="Enable debug logging")
     parser.add_argument('--socket', required=True,
                         help='alternative SSH agent socket')
+    parser.add_argument('--syslog', help='syslog socket')
 
     args, extra_args = parser.parse_known_args()
 
@@ -170,7 +171,7 @@ def main():
     level = logging.INFO
     if args.debug:
         level = logging.DEBUG
-    setup_logging("sshagentmux", level)
+    setup_logging("sshagentmux", level, args.syslog)
 
     LOG.info("Starting sshagentmux")
 

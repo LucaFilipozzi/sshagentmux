@@ -50,6 +50,16 @@ class BaseAgentRequestHandler(SocketServer.BaseRequestHandler):
 
             self.peer_uid, _, self.peer_pid = \
                 self.PEERCRED_STRUCT.unpack(peercred)
+        elif sys.platform == 'darwin':
+            LOCAL_PEERCRED = 0x001
+            fmt = struct.Struct('2Ih16I') # see /usr/include/sys/ucred.h - struct xucred
+            res = tuple(fmt.unpack(self.request.getsockopt(0, LOCAL_PEERCRED, fmt.size)))
+            self.peer_uid = res[1]
+
+            LOCAL_PEERPID = 0x002
+            fmt = struct.Struct('I')
+            res = fmt.unpack(self.request.getsockopt(0, LOCAL_PEERPID, fmt.size))
+            self.peer_pid = res[0]
         else:
             raise RuntimeError("Unsupported platform {}.".format(
                                sys.platform))
